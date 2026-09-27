@@ -1,6 +1,6 @@
 // ========== إعدادات ==========
 // ⚠️ بدّل هذا الرابط بالرابط الجديد من Apps Script
-const API_URL = 'https://script.google.com/macros/s/AKfycbzHlmumb3J3tdyKfWsSn-Q85bamEJaEylffvsvmshHFvQfPvaNxgXotiJqbh68roTR0/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxBwEZ985hzJGXUvewptERFSaWeLb33VI9r8brXyqjf999872X5f83dg6BrTwCx4Esv/exec';
 
 // ========== الحالة ==========
 let products = [];
