@@ -3,12 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sater ByAya</title>
+  <title>Sater ByAya | براويز فنية</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>مرحباً بكم في Sater ByAya</h1>
-  <p>الموقع قيد الإنشاء...</p>
+
+  <!-- ========== الهيدر ========== -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="#" class="logo">
+        <span class="logo-main">Sater ByAya</span>
+        <span class="logo-sub">براويز فنية</span>
+      </a>
+      <button class="cart-btn" id="cartBtn">
+        🛒 السلة
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== القسم الترحيبي ========== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>جمالٌ يليق بذكرياتك</h1>
+      <p>براويز مصنوعة بعناية لتحفظ أجمل لحظاتك</p>
+      <a href="#products" class="btn-primary">تسوق الآن</a>
+    </div>
+  </section>
+
+  <!-- ========== قسم المنتجات ========== -->
+  <section class="products-section" id="products">
+    <div class="container">
+      <h2 class="section-title">منتجاتنا</h2>
+      
+      <div class="products-grid" id="productsGrid">
+        <!-- يتم تعبئة المنتجات هنا تلقائياً -->
+        <div class="loading">جاري تحميل المنتجات...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== السلة الجانبية ========== -->
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>سلة التسوق</h3>
+      <button class="close-btn" id="closeCart">✕</button>
+    </div>
+    
+    <div class="cart-items" id="cartItems">
+      <!-- يتم تعبئة العناصر هنا -->
+    </div>
+    
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>المجموع:</span>
+        <span id="cartTotal">0 د.أ</span>
+      </div>
+      <button class="btn-checkout" id="checkoutBtn">إتمام الطلب عبر واتساب</button>
+    </div>
+  </aside>
+
+  <!-- ========== طبقة معتمة ========== -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ========== نموذج الطلب ========== -->
+  <div class="order-modal" id="orderModal">
+    <div class="order-modal-content">
+      <button class="close-btn" id="closeOrder">✕</button>
+      <h3>إتمام الطلب</h3>
+      <p class="order-note">سيتم إرسال طلبك عبر واتساب</p>
+      
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="customerName">الاسم الكامل *</label>
+          <input type="text" id="customerName" required placeholder="مثال: أحمد محمد">
+        </div>
+        
+        <div class="form-group">
+          <label for="customerPhone">رقم الهاتف *</label>
+          <input type="tel" id="customerPhone" required placeholder="07XXXXXXXX">
+        </div>
+        
+        <div class="form-group">
+          <label for="customerAddress">العنوان</label>
+          <textarea id="customerAddress" rows="2" placeholder="المدينة، المنطقة، تفاصيل إضافية"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="customerNote">ملاحظات (اختياري)</label>
+          <textarea id="customerNote" rows="2" placeholder="أي تفاصيل إضافية"></textarea>
+        </div>
+        
+        <button type="submit" class="btn-submit">تأكيد وإرسال عبر واتساب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== الفوتر ========== -->
+  <footer class="footer">
+    <div class="container">
+      <p>Sater ByAya &copy; 2026 — جميع الحقوق محفوظة</p>
+      <p class="footer-sub">براويز مصنوعة بحب 🤎</p>
+    </div>
+  </footer>
+
+  <!-- ========== إشعار ========== -->
+  <div class="toast" id="toast"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
