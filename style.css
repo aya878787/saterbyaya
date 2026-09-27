@@ -618,12 +618,15 @@ body {
 }
 
 /* ========== الفوتر ========== */
-.footer {
-  background: var(--wood);
-  color: var(--beige);
+
+  .footer {
+  background: var(--beige-dark);
+  color: var(--wood);
   text-align: center;
   padding: 30px 20px;
   margin-top: auto;
+  border-top: 3px solid var(--primary);
+}
 }
 
 .footer p {
@@ -631,9 +634,12 @@ body {
   font-size: 0.95rem;
 }
 
+
 .footer-sub {
   color: var(--wood-light);
   font-size: 0.85rem;
+  opacity: 0.9;
+}
 }
 
 /* ========== الإشعار ========== */
