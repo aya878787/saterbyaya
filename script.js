@@ -1,7 +1,3 @@
-// ========== إعدادات ==========
-// ⚠️ بدّل هذا الرابط بالرابط الجديد من Apps Script
-const API_URL = 'https://script.google.com/macros/s/AKfycbxBwEZ985hzJGXUvewptERFSaWeLb33VI9r8brXyqjf999872X5f83dg6BrTwCx4Esv/exec';
-
 // ========== الحالة ==========
 let products = [];
 let cart = JSON.parse(localStorage.getItem('saterCart')) || [];
@@ -22,46 +18,36 @@ const closeOrder = document.getElementById('closeOrder');
 const orderForm = document.getElementById('orderForm');
 const toast = document.getElementById('toast');
 
-// ========== جلب المنتجات عبر JSONP ==========
-function loadProducts() {
-  const callbackName = 'handleProducts_' + Date.now();
-  
-  window[callbackName] = function(data) {
+// ========== جلب المنتجات عبر Vercel Proxy ==========
+async function loadProducts() {
+  try {
+    const response = await fetch('/api/products?action=getProducts');
+    const data = await response.json();
+    
     if (data.success) {
       products = data.products;
       renderProducts();
     } else {
       productsGrid.innerHTML = '<div class="loading">حدث خطأ في تحميل المنتجات</div>';
     }
-    delete window[callbackName];
-    if (script.parentNode) document.body.removeChild(script);
-  };
-  
-  const script = document.createElement('script');
-  script.src = `${API_URL}?action=getProducts&callback=${callbackName}`;
-  script.onerror = function() {
+  } catch (error) {
+    console.error('Error loading products:', error);
     productsGrid.innerHTML = '<div class="loading">تعذّر الاتصال بالخادم</div>';
-    delete window[callbackName];
-    if (script.parentNode) document.body.removeChild(script);
-  };
-  document.body.appendChild(script);
+  }
 }
 
-// ========== جلب الإعدادات عبر JSONP ==========
-function loadSettings() {
-  const callbackName = 'handleSettings_' + Date.now();
-  
-  window[callbackName] = function(data) {
+// ========== جلب الإعدادات عبر Vercel Proxy ==========
+async function loadSettings() {
+  try {
+    const response = await fetch('/api/products?action=getSettings');
+    const data = await response.json();
+    
     if (data.success) {
       settings = data.settings;
     }
-    delete window[callbackName];
-    if (script.parentNode) document.body.removeChild(script);
-  };
-  
-  const script = document.createElement('script');
-  script.src = `${API_URL}?action=getSettings&callback=${callbackName}`;
-  document.body.appendChild(script);
+  } catch (error) {
+    console.error('Error loading settings:', error);
+  }
 }
 
 // ========== عرض المنتجات ==========
@@ -238,11 +224,10 @@ async function submitOrder(e) {
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  // 1) نرسل الطلب للـ Sheet
+  // 1) نرسل الطلب للـ Sheet عبر البروكسي
   try {
-    await fetch(API_URL, {
+    await fetch('/api/products', {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'createOrder',
