@@ -201,11 +201,30 @@ function openOrderModal() {
   closeCartSidebar();
   orderModal.classList.add('active');
   document.body.style.overflow = 'hidden';
+  updateOrderButton();
 }
 
 function closeOrderModal() {
   orderModal.classList.remove('active');
   document.body.style.overflow = '';
+}
+
+// ========== تحديث حالة زر الطلب ==========
+function updateOrderButton() {
+  const submitBtn = document.querySelector('.btn-submit');
+  if (!submitBtn) return;
+  
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const address = document.getElementById('customerAddress').value.trim();
+  
+  if (name && phone && address) {
+    submitBtn.disabled = false;
+    submitBtn.classList.add('active');
+  } else {
+    submitBtn.disabled = true;
+    submitBtn.classList.remove('active');
+  }
 }
 
 // ========== إرسال الطلب ==========
@@ -217,14 +236,15 @@ async function submitOrder(e) {
   const customerAddress = document.getElementById('customerAddress').value.trim();
   const customerNote = document.getElementById('customerNote').value.trim();
 
-  if (!customerName || !customerPhone) {
-    showToast('الرجاء إدخال الاسم ورقم الهاتف');
+  if (!customerName || !customerPhone || !customerAddress) {
+    showToast('الرجاء تعبئة الاسم والهاتف والعنوان');
     return;
   }
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const storeName = settings.store_name || 'سطر';
 
-  // 1) نرسل الطلب للـ Sheet عبر البروكسي
+  // 1) نرسل الطلب للـ Sheet
   try {
     await fetch('/api/products', {
       method: 'POST',
@@ -247,19 +267,35 @@ async function submitOrder(e) {
   // 2) نجهز رسالة الواتساب
   const whatsappNumber = settings.whatsapp_number || '962791234567';
   
-  let message = `مرحباً، بدي أطلب من ${settings.store_name || 'Sater ByAya'}:\n\n`;
+  let message = `🌸 *${storeName}* 🌸\nبراويز فنية\n\n`;
+  message += `━━━━━━━━━━━━━━━━\n\n`;
+  message += `📦 *تفاصيل الطلب:*\n\n`;
   
-  cart.forEach(item => {
-    message += `🔹 ${item.name}`;
-    if (item.size) message += ` (${item.size})`;
-    message += ` × ${item.quantity} = ${item.price * item.quantity} د.أ\n`;
+  cart.forEach((item, index) => {
+    message += `${index + 1}️⃣ ${item.name}\n`;
+    if (item.size) message += `    المقاس: ${item.size}\n`;
+    message += `    الكمية: ${item.quantity}\n`;
+    message += `    السعر: ${item.price * item.quantity} د.أ\n\n`;
   });
-
-  message += `\n💰 المجموع: ${total} د.أ\n`;
-  message += `\n👤 الاسم: ${customerName}`;
-  message += `\n📞 الهاتف: ${customerPhone}`;
-  if (customerAddress) message += `\n📍 العنوان: ${customerAddress}`;
-  if (customerNote) message += `\n📝 ملاحظات: ${customerNote}`;
+  
+  message += `━━━━━━━━━━━━━━━━\n\n`;
+  message += `💰 *المجموع:* ${total} د.أ\n\n`;
+  message += `━━━━━━━━━━━━━━━━\n\n`;
+  message += `👤 *بياناتك:*\n`;
+  message += `• الاسم: ${customerName}\n`;
+  message += `• الهاتف: ${customerPhone}\n`;
+  message += `• العنوان: ${customerAddress}\n`;
+  if (customerNote) message += `• ملاحظات: ${customerNote}\n`;
+  
+  message += `\n━━━━━━━━━━━━━━━━\n\n`;
+  message += `📌 *الخطوات القادمة:*\n\n`;
+  message += `1. رح نتواصل معك خلال ساعات قليلة\n`;
+  message += `2. نأكد تفاصيل الطلب والتوصيل\n`;
+  message += `3. نتفق على طريقة الدفع والتسليم\n\n`;
+  message += `⏱ ساعات العمل: 10 صباحاً - 10 مساءً\n\n`;
+  message += `━━━━━━━━━━━━━━━━\n\n`;
+  message += `شكراً لثقتك بـ *${storeName}* 🌸\n`;
+  message += `نتمنى تعجبك اختياراتك 🤎`;
 
   const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   
@@ -291,6 +327,12 @@ orderForm.addEventListener('submit', submitOrder);
 
 orderModal.addEventListener('click', (e) => {
   if (e.target === orderModal) closeOrderModal();
+});
+
+// ========== متابعة تغييرات الحقول ==========
+['customerName', 'customerPhone', 'customerAddress'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateOrderButton);
 });
 
 // ========== تشغيل ==========
