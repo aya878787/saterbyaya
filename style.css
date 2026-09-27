@@ -731,3 +731,43 @@ body {
 .btn-submit:not(:disabled):hover {
   background: var(--primary-dark);
 }
+/* ========== رابط انستغرام ========== */
+.instagram-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 124, 63, 0.2);
+}
+
+.instagram-link:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(74, 124, 63, 0.35);
+}
+
+.instagram-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+@media (max-width: 640px) {
+  .instagram-link {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .instagram-link svg {
+    width: 18px;
+    height: 18px;
+  }
+}
