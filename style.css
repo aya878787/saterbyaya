@@ -711,3 +711,18 @@ body {
     padding: 22px;
   }
 }
+/* ========== زر الإرسال المعطل ========== */
+.btn-submit:disabled {
+  background: #B0B0B0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-submit:not(:disabled) {
+  background: var(--primary);
+  cursor: pointer;
+}
+
+.btn-submit:not(:disabled):hover {
+  background: var(--primary-dark);
+}
